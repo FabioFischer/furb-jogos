@@ -10,8 +10,8 @@ Ludwig deverá buscar pistas de sua irmã e descobrir o local e tempo em que ela
 
 ## Personagens
 
-Ludwig - protagonista 
-Sofie - irmã 
+  - Ludwig - protagonista 
+  - Sofie - irmã 
 
 ## Interabilidade
 
