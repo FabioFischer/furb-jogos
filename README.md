@@ -3,26 +3,35 @@
 Jogo 2D plataforma de aventura com elementos puzzle. 
 Engine: Unity 5
 
-## Conceito
+## História
+  Ludwig é um mago das artes arcanas do espaço-tempo. Um dia, ao cair no sono em seu laboratório, sua irmã Sofie bisbilhotou um de seus livros e, sem querer, preferiu as palavras chave para conjurar um portal do tempo que a sugou. Ao acordar, o mago percebe a bagunça e o livro aberto em seu laboratório.
+  Agora Ludwig deverá buscar pistas de sua irmã e descobrir o local e tempo em que ela foi parar.
 
-Ludwig é um mago em apredizagem nas artes arcanas do espaço-tempo. Um dia, ao cair no sono em seu laboratório, sua irmã bisbilhotou um de seus livros e, sem querer, falou as palavras chave para conjurar um portal do tempo que a sugou. Ao acordar, Ludwig percebe a bagunça e o livro aberto em seu laboratório.
-Ludwig deverá buscar pistas de sua irmã e descobrir o local e tempo em que ela foi parar.
+## Jogabilidade
+  Jogo 2D plataforma;
+  Ludwig possui poderes elementais que podem ser interagidos com o cenário;
+  Time traveling para pontos históricos;
+  Um jogador necessário para controlar o Ludwig;
 
 ## Personagens
+  - Ludwig, o Mago beberrão que está incomodado por ter que viajar o tempo atrás de sua irmã. 
+  - Sofie, a jovem aprendiz que é muito curiosa e pode acabar em problemas ao viajar no tempo.
 
-  - Ludwig - protagonista 
-  - Sofie - irmã 
+## Objetivo Final do Personagem
+  Ludwig deverá viajar no tempo e resolver puzzles para encontrar pistas e encontrar a sua irmã e traze-la de volta a linha de tempo correta antes que um paradoxo irreversível ocorra.
 
-## Interabilidade
+## Desafio do Jogo
+  Resolver os puzzles utilizando os elementos disponíveis no jogo.
 
-  - Ludwig possui poderes elementais que podem ser interagidos com o cenário.
-  - Time traveling para pontos históricos causando paradoxos que resultam em cenários atuais. (inclinação da torre de pisa, na Italia; linhas de Nazca, no Peru)
+## Limites do Jogo
+  O jogo será definido em fases, que representam capítulos da história do mundo.
+
+## Resultados do jogo
+  Cada fase poderá ser concluída com sucesso ou culminar na desistência do jogador por falta de opções caso as escolher feitas estejam erradas.
+  Caso o jogador ganhe a fase, uma nova pista do paradeiro de sua irmã será descoberta.
 
 
-# Deadlines
-
-  - 22/08 - High Concept (2 a 4 pg)
-	 - Idéia inicial do projeto
+Upcoming Deadlines
 
   - 05/09 - Game Treatment (10 a 20 pg)
 	 - Protótipos de tela
