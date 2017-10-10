@@ -1,0 +1,138 @@
+fileFormatVersion: 2
+guid: 7db5ba4c3992f4043b01099a0596638b
+timeCreated: 1507675094
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 541, y: 160, z: 446, w: 227}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites: []
+    outline:
+    - - {x: 124.71795, y: -960.3125}
+      - {x: 126.90598, y: -962.5}
+      - {x: 192.54701, y: -962.5}
+      - {x: 194.73505, y: -960.3125}
+      - {x: 194.73505, y: 896.875}
+      - {x: 192.54701, y: 899.0625}
+      - {x: 126.90598, y: 899.0625}
+      - {x: 124.71795, y: 896.875}
+      - {x: 124.71795, y: 802.8125}
+      - {x: -29.538462, y: 802.8125}
+      - {x: -29.538462, y: 896.875}
+      - {x: -31.726496, y: 899.0625}
+      - {x: -96.273506, y: 899.0625}
+      - {x: -98.46154, y: 896.875}
+      - {x: -98.46154, y: -960.3125}
+      - {x: -96.273506, y: -962.5}
+      - {x: -31.726496, y: -962.5}
+      - {x: -29.538462, y: -960.3125}
+      - {x: -29.538462, y: -867.34375}
+      - {x: 124.71795, y: -867.34375}
+    physicsShape:
+    - - {x: 193.64102, y: 897.96875}
+      - {x: -97.36752, y: 897.96875}
+      - {x: -97.36752, y: -961.40625}
+      - {x: 193.64102, y: -961.40625}
+    - - {x: -29.538462, y: -706.5625}
+      - {x: 124.71795, y: -706.5625}
+      - {x: 124.71795, y: -797.34375}
+      - {x: -29.538462, y: -797.34375}
+    - - {x: -29.538462, y: -546.875}
+      - {x: 124.71795, y: -546.875}
+      - {x: 124.71795, y: -636.5625}
+      - {x: -29.538462, y: -636.5625}
+    - - {x: -29.538462, y: -387.1875}
+      - {x: 124.71795, y: -387.1875}
+      - {x: 124.71795, y: -476.875}
+      - {x: -29.538462, y: -476.875}
+    - - {x: -29.538462, y: -227.5}
+      - {x: 124.71795, y: -227.5}
+      - {x: 124.71795, y: -317.1875}
+      - {x: -29.538462, y: -317.1875}
+    - - {x: -29.538462, y: -66.71875}
+      - {x: 124.71795, y: -66.71875}
+      - {x: 124.71795, y: -157.5}
+      - {x: -29.538462, y: -157.5}
+    - - {x: -29.538462, y: 92.96875}
+      - {x: 124.71795, y: 92.96875}
+      - {x: 124.71795, y: 3.28125}
+      - {x: -29.538462, y: 3.28125}
+    - - {x: -29.538462, y: 252.65625}
+      - {x: 124.71795, y: 252.65625}
+      - {x: 124.71795, y: 162.96875}
+      - {x: -29.538462, y: 162.96875}
+    - - {x: -29.538462, y: 413.4375}
+      - {x: 124.71795, y: 413.4375}
+      - {x: 124.71795, y: 322.65625}
+      - {x: -29.538462, y: 322.65625}
+    - - {x: -29.538462, y: 573.125}
+      - {x: 124.71795, y: 573.125}
+      - {x: 124.71795, y: 483.4375}
+      - {x: -29.538462, y: 483.4375}
+    - - {x: -29.538462, y: 732.8125}
+      - {x: 124.71795, y: 732.8125}
+      - {x: 124.71795, y: 643.125}
+      - {x: -29.538462, y: 643.125}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
