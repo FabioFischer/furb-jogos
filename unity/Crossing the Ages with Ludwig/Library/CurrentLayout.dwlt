@@ -254,15 +254,15 @@ MonoBehaviour:
     height: 573
   m_MinSize: {x: 204, y: 221}
   m_MaxSize: {x: 4004, y: 4021}
-  m_ActualView: {fileID: 19}
+  m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
   - {fileID: 19}
   - {fileID: 14}
   - {fileID: 13}
   - {fileID: 12}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -287,7 +287,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 381
     y: 92
-    width: 1148
+    width: 1149
     height: 552
   m_AnimEditor: {fileID: 0}
   m_Locked: 0
@@ -315,13 +315,15 @@ MonoBehaviour:
     serializedVersion: 2
     x: 381
     y: 92
-    width: 1148
+    width: 1149
     height: 552
   m_ViewPositions:
     m_KeySerializationHelper:
     - {fileID: 1107867043456126798, guid: 874c819becdd5c04785015e5fc059cdb, type: 2}
+    - {fileID: 1107761096711164846, guid: 8b5b10e3fdd14f148b93a71f3847b133, type: 2}
     m_ValueSerializationHelper:
     - {x: 635.80005, y: 128}
+    - {x: 639.4, y: 294.40002}
   m_PreviewAnimator: {fileID: 0}
   m_AnimatorController: {fileID: 0}
   m_BreadCrumbs: []
@@ -399,19 +401,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets
+    - Assets/Fase 1
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets
+  - Assets/Fase 1
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Digo-NOTE\Documents\furb-djed\unity\Crossing the Ages
     with Ludwig
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 16260000
-    m_LastClickedID: 9750
+    m_SelectedIDs: 36260000
+    m_LastClickedID: 9782
     m_ExpandedIDs: 0000000016260000d426000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -467,7 +469,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000f2260000d82800001a2a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -558,7 +560,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 1afcffff00000000
+    m_ExpandedIDs: 1afcffff0000000096260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -701,7 +703,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoom: 0
     m_UniformScale: 1
     m_UpDirection: 1
