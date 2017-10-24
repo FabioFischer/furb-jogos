@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
     private Rigidbody2D myRigidBody;
     private Animator myAnimator;
+    private PlayerInventory inventory { get; set; }
     private bool facingRight;
-    public bool OnLadder { get; set; }
-
+    public bool onLadder { get; set; }
+    public bool onFlask { get; set; }
 
     // Use this for initialization
     void Start()
     {
-        OnLadder = false;
+        onLadder = false;
+        onFlask = false;
         facingRight = true;
         myRigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
@@ -24,13 +27,25 @@ public class PlayerScript : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
+        KeyBoardActionHandler();
         MovimentHandler(horizontal, vertical);
         Flip(horizontal);
     }
 
+    private void KeyBoardActionHandler()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (onFlask)
+            {
+            }
+        }
+    }
+
     private void MovimentHandler(float horizontal, float vertical)
     {
-        if (OnLadder)
+        if (onLadder)
         {
             myRigidBody.velocity = new Vector2(horizontal * 10, vertical * 10);
         }
@@ -52,21 +67,32 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    private void ThrowObject(GameObject obj)
+    {
+    }
+
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Escada")
+        switch (collision.tag)
         {
-            myRigidBody.gravityScale = 0;
-            OnLadder = true;
+            case "Escada":
+                myRigidBody.gravityScale = 10;
+                onLadder = true;
+                break;
+            case "Frasco":
+                onFlask = true;
+                break;
         }
     }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Escada")
+        switch (collision.tag)
         {
-            myRigidBody.gravityScale = 10;
-            OnLadder = false;
+            case "Escada":
+                myRigidBody.gravityScale = 10;
+                onLadder = false;
+                break;
         }
     }
 }
