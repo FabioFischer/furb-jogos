@@ -1,9 +1,10 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Player;
+using Assets.Scripts.Objects;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour, IPlayer
+public class Player : MonoBehaviour, IPlayer
 {
     private Rigidbody2D myRigidBody;
     private Animator myAnimator;
@@ -11,7 +12,12 @@ public class PlayerScript : MonoBehaviour, IPlayer
     private List<GameObject> collisions { get; set; }
 
     private bool facingRight;
-    
+    bool onGround;
+    public Transform groundCheck;
+    float groundRadius = 0.2f;
+    float jumpForce = 10000f;
+    public LayerMask whatIsGround;
+
     // Use this for initialization
     void Start()
     {
@@ -24,14 +30,30 @@ public class PlayerScript : MonoBehaviour, IPlayer
     }
 
     /// <summary>
-    /// Update is called once per frame
-    /// </summary>    
-    void Update()
+    /// 
+    /// </summary>
+    void FixedUpdate()
     {
+        onGround = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+        myAnimator.SetBool("Ground", onGround);
+
         KeyboardHandler();
         MouseClickHandler();
     }
 
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>    
+    void Update()
+    {
+        if (onGround && Input.GetKeyDown(KeyCode.Space))
+        {
+            print("Pulando " + jumpForce);
+            myAnimator.SetBool("Ground", false);
+            myRigidBody.AddForce(new Vector2(0, jumpForce));
+        }
+    }
+    
     /// <summary>
     /// 
     /// </summary>
@@ -41,7 +63,7 @@ public class PlayerScript : MonoBehaviour, IPlayer
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            GameObject flask = GameObject.Find("Frasco");
+            GameObject flask = GameObject.Find(Flask.FlaskResource);
 
             if (collisions.Contains(flask))
             {
@@ -49,10 +71,6 @@ public class PlayerScript : MonoBehaviour, IPlayer
                 inventory.AddItem(flask);
                 flask.active = false;
             }
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //TODO: Van Halen Jump
         }
     }
 
@@ -76,14 +94,15 @@ public class PlayerScript : MonoBehaviour, IPlayer
     {
         ChangeDirection(horizontal);
 
-        if (collisions.Contains(GameObject.Find("Escada")))
+        if (collisions.Contains(GameObject.Find(Ladder.LadderResource)))
         {
             myRigidBody.gravityScale = 10;
             myRigidBody.velocity = new Vector2(horizontal * 10, vertical * 10);
         }
 
         myRigidBody.velocity = new Vector2(horizontal * 10, myRigidBody.velocity.y);
-        myAnimator.SetFloat("Speed", Mathf.Abs(horizontal));
+        myAnimator.SetFloat("hSpeed", Mathf.Abs(horizontal));
+        myAnimator.SetFloat("vSpeed", Mathf.Abs(Input.GetAxis("Vertical")));
     }
 
     /// <summary>
