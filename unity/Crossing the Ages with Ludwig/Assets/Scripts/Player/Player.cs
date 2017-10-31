@@ -11,8 +11,7 @@ public class Player : MonoBehaviour, IPlayer
     private PlayerInventory inventory { get; set; }
     private List<GameObject> collisions { get; set; }
 
-    private bool facingRight;
-    bool onGround;
+    private bool facingRight, onGround;
     public Transform groundCheck;
     float groundRadius = 0.2f;
     float jumpForce = 10000f;
@@ -34,33 +33,30 @@ public class Player : MonoBehaviour, IPlayer
     /// </summary>
     void FixedUpdate()
     {
-        onGround = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        onGround = onGroundCheck(groundCheck.position, groundRadius, whatIsGround);
+
+        myAnimator.SetFloat("hSpeed", Mathf.Abs(horizontal));
+        myAnimator.SetFloat("vSpeed", Mathf.Abs(vertical));
         myAnimator.SetBool("Ground", onGround);
 
-        KeyboardHandler();
-        MouseClickHandler();
+        KeyActionHandler();
+        MouseActionHandler();
+        Movement(horizontal, vertical);
     }
 
-    /// <summary>
-    /// Update is called once per frame
-    /// </summary>    
-    void Update()
+    private bool onGroundCheck(Vector3 pos, float radius, LayerMask ground)
     {
-        if (onGround && Input.GetKeyDown(KeyCode.Space))
-        {
-            print("Pulando " + jumpForce);
-            myAnimator.SetBool("Ground", false);
-            myRigidBody.AddForce(new Vector2(0, jumpForce));
-        }
+        return Physics2D.OverlapCircle(pos, radius, ground);
     }
     
     /// <summary>
     /// 
     /// </summary>
-    public void KeyboardHandler()
+    public void KeyActionHandler()
     {
-        Movement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
         if (Input.GetKeyDown(KeyCode.E))
         {
             GameObject flask = GameObject.Find(Flask.FlaskResource);
@@ -72,12 +68,17 @@ public class Player : MonoBehaviour, IPlayer
                 flask.active = false;
             }
         }
+        if (onGround && Input.GetKeyDown(KeyCode.Space))
+        {
+            myRigidBody.AddForce(new Vector2(0, jumpForce));
+            myAnimator.SetBool("Ground", false);
+        }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public void MouseClickHandler()
+    public void MouseActionHandler()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -101,8 +102,6 @@ public class Player : MonoBehaviour, IPlayer
         }
 
         myRigidBody.velocity = new Vector2(horizontal * 10, myRigidBody.velocity.y);
-        myAnimator.SetFloat("hSpeed", Mathf.Abs(horizontal));
-        myAnimator.SetFloat("vSpeed", Mathf.Abs(Input.GetAxis("Vertical")));
     }
 
     /// <summary>
@@ -130,7 +129,10 @@ public class Player : MonoBehaviour, IPlayer
     {
         if (obj != null)
         {
-            //TODO: Throw that godamn obj
+            // Movimento a posição do objeto até a posição do personagem
+            obj = GameObject.Instantiate(obj, transform.position, transform.rotation);
+           
+            obj.GetComponent<Rigidbody2D>().AddForce(this.transform.up * 1000);
         }
     }
 

@@ -6,8 +6,8 @@ namespace Assets.Scripts.Player
 {
     interface IPlayer
     {
-        void KeyboardHandler();
-        void MouseClickHandler();
+        void KeyActionHandler();
+        void MouseActionHandler();
         void Movement(float horizontal, float vertical);
     }
 }
