@@ -29,7 +29,7 @@ public class Player : MonoBehaviour, IPlayer
     }
 
     /// <summary>
-    /// 
+    /// Update is called once per frame.
     /// </summary>
     void FixedUpdate()
     {
@@ -38,25 +38,32 @@ public class Player : MonoBehaviour, IPlayer
 
         onGround = onGroundCheck(groundCheck.position, groundRadius, whatIsGround);
 
-        myAnimator.SetFloat("hSpeed", Mathf.Abs(horizontal));
-        myAnimator.SetFloat("vSpeed", Mathf.Abs(vertical));
-        myAnimator.SetBool("Ground", onGround);
+        myAnimator.SetFloat("Speed", Mathf.Abs(horizontal));
+        //myAnimator.SetBool("Ground", onGround); Estourava exception
 
         KeyActionHandler();
         MouseActionHandler();
         Movement(horizontal, vertical);
     }
 
+    /// <summary> 
+    /// Check if player is on ground. 
+    /// </summary>
+    /// <param name="pos"> Player position. </param>
+    /// <param name="radius"> Limit. </param>
+    /// <param name="ground"> Object definied as ground. </param>
+    /// <returns> True if player is on ground. </returns>
     private bool onGroundCheck(Vector3 pos, float radius, LayerMask ground)
     {
         return Physics2D.OverlapCircle(pos, radius, ground);
     }
     
     /// <summary>
-    /// 
+    /// Handle keyboard actions such as: Get object, jump...
     /// </summary>
     public void KeyActionHandler()
     {
+        // If E key pressed, get object.
         if (Input.GetKeyDown(KeyCode.E))
         {
             GameObject flask = GameObject.Find(Flask.FlaskResource);
@@ -65,32 +72,35 @@ public class Player : MonoBehaviour, IPlayer
             {
                 collisions.Remove(flask);
                 inventory.AddItem(flask);
-                flask.active = false;
+                //flask.active = false; GameObject.active is obsolete, SetActive(false) used.  
+                flask.SetActive(false);
             }
         }
+        
+        // If space pressed, player jumps
         if (onGround && Input.GetKeyDown(KeyCode.Space))
         {
             myRigidBody.AddForce(new Vector2(0, jumpForce));
-            myAnimator.SetBool("Ground", false);
         }
     }
 
     /// <summary>
-    /// 
+    /// Handle mouse click actions such as: Throws/User objects.
     /// </summary>
     public void MouseActionHandler()
     {
-        if (Input.GetMouseButtonDown(0))
+        // Throw object if mouse clicked and inventory list is not empty.
+        if (Input.GetMouseButtonDown(0) && inventory.items.Count > 0)
         {
             ThrowObject(inventory.GetFirstItem());
         }
     }
 
     /// <summary>
-    /// 
+    /// Move player.
     /// </summary>
-    /// <param name="horizontal"></param>
-    /// <param name="vertical"></param>
+    /// <param name="horizontal"> How much player moves on horizontal. </param>
+    /// <param name="vertical"> How much player moves on vertical. </param>
     public void Movement(float horizontal, float vertical)
     {
         ChangeDirection(horizontal);
@@ -105,7 +115,7 @@ public class Player : MonoBehaviour, IPlayer
     }
 
     /// <summary>
-    /// 
+    /// Change horizontal player direction.
     /// </summary>
     /// <param name="horizontal"></param>
     private void ChangeDirection (float horizontal)
@@ -122,14 +132,14 @@ public class Player : MonoBehaviour, IPlayer
     }
 
     /// <summary>
-    /// 
+    /// Throw object from user inventory.
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj"> Object that will be throwed away. </param>
     private void ThrowObject(GameObject obj)
     {
         if (obj != null)
         {
-            // Movimento a posição do objeto até a posição do personagem
+            // Movimento a posição do objeto até a posição do personagem.
             obj = GameObject.Instantiate(obj, transform.position, transform.rotation);
            
             obj.GetComponent<Rigidbody2D>().AddForce(this.transform.up * 1000);
@@ -137,18 +147,19 @@ public class Player : MonoBehaviour, IPlayer
     }
 
     /// <summary>
-    /// 
+    /// Collide with actives object. When a object it's on player inventory, it will be desactive.
     /// </summary>
-    /// <param name="collision"></param>
+    /// <param name="collision"> Colision generated. </param>
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.active)  collisions.Add(collision.gameObject);
+        if (collision.gameObject.active)
+            collisions.Add(collision.gameObject);
     }
 
     /// <summary>
-    /// /
+    /// Removes objects collision.
     /// </summary>
-    /// <param name="collision"></param>
+    /// <param name="collision"> Collision between objects. </param>
     public void OnTriggerExit2D(Collider2D collision)
     {
         collisions.Remove(collision.gameObject);
