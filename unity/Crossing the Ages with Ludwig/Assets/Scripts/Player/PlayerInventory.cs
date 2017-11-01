@@ -31,6 +31,15 @@ namespace Assets.Scripts
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="obj"></param>
+        public void RemoveItem(GameObject obj)
+        {
+            this.items.Remove(obj);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public GameObject GetFirstItem()
         {

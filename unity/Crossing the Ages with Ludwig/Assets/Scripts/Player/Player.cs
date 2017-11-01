@@ -6,44 +6,98 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IPlayer
 {
-    private Rigidbody2D myRigidBody;
-    private Animator myAnimator;
+    private Rigidbody2D rigidBody;
+    private Animator animator;
     private PlayerInventory inventory { get; set; }
-    private List<GameObject> collisions { get; set; }
+    private RaycastHit2D hit { get; set; }
+    private bool facingRight, onGround, onLadder;
 
-    private bool facingRight, onGround;
-    public Transform groundCheck;
-    float groundRadius = 0.2f;
-    float jumpForce = 10000f;
-    public LayerMask whatIsGround;
+    public Transform ground;
+    public Transform holdPoint;
+    public LayerMask groundObjects;
+    public LayerMask notGrabbedObjects;
+    public float groundRadius = 0.2f;
+    public float jumpForce = 10000f;
+    public float throwDistance = 2f;
+    public float throwForce = 10f;
 
     // Use this for initialization
     void Start()
     {
-        myRigidBody = GetComponent<Rigidbody2D>();
-        myAnimator = GetComponent<Animator>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         inventory = new PlayerInventory();
-        collisions = new List<GameObject>();
         
         facingRight = true;
+        onLadder = false;
     }
 
     /// <summary>
     /// Update is called once per frame.
     /// </summary>
-    void FixedUpdate()
+    void Update()
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+        
+        onGround = onGroundCheck(ground.position, groundRadius, groundObjects);
 
-        onGround = onGroundCheck(groundCheck.position, groundRadius, whatIsGround);
+        animator.SetFloat("Speed", Mathf.Abs(horizontal));
+        //myAnimator.SetBool("Ground", onGround); Descomentar ao adicionar sprite de pulo do personagem
 
-        myAnimator.SetFloat("Speed", Mathf.Abs(horizontal));
-        //myAnimator.SetBool("Ground", onGround); Estourava exception
-
+        Movement(horizontal, vertical);
+        CheckCollision();
         KeyActionHandler();
         MouseActionHandler();
-        Movement(horizontal, vertical);
+    }
+
+    /// <summary>
+    /// Move player.
+    /// </summary>
+    /// <param name="horizontal"> How much player moves on horizontal. </param>
+    /// <param name="vertical"> How much player moves on vertical. </param>
+    public void Movement(float horizontal, float vertical)
+    {
+        ChangeDirection(horizontal);
+
+        if (onLadder)
+        {
+            rigidBody.gravityScale = 10;
+            rigidBody.velocity = new Vector2(horizontal * 10, vertical * 10);
+        }
+        else
+        {
+            rigidBody.velocity = new Vector2(horizontal * 10, rigidBody.velocity.y);
+        }
+    }
+
+    /// <summary>
+    /// Change horizontal player direction.
+    /// </summary>
+    /// <param name="horizontal"></param>
+    private void ChangeDirection(float horizontal)
+    {
+        if (horizontal > 0 && !facingRight || horizontal < 0 && facingRight)
+        {
+            facingRight = !facingRight;
+
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+
+            transform.localScale = scale;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void CheckCollision()
+    {
+        Physics2D.queriesStartInColliders = false;
+        hit = Physics2D.Raycast(
+            transform.position, 
+            Vector2.right * transform.localScale.x, 
+            throwDistance);
     }
 
     /// <summary> 
@@ -59,76 +113,50 @@ public class Player : MonoBehaviour, IPlayer
     }
     
     /// <summary>
-    /// Handle keyboard actions such as: Get object, jump...
+    /// Handle keyboard actions such as: 
+    ///     E:      get object
+    ///     R:      throw object
+    ///     SPACE:  jump
     /// </summary>
     public void KeyActionHandler()
     {
         // If E key pressed, get object.
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && hit != null)
         {
-            GameObject flask = GameObject.Find(Flask.FlaskResource);
-
-            if (collisions.Contains(flask))
+            if (hit.collider != null && hit.collider.tag == "Grabbable")
             {
-                collisions.Remove(flask);
-                inventory.AddItem(flask);
-                //flask.active = false; GameObject.active is obsolete, SetActive(false) used.  
-                flask.SetActive(false);
+                GameObject obj = hit.collider.gameObject;
+                
+                inventory.AddItem(obj);
+                obj.SetActive(false);
             }
         }
-        
+
+        // If R key pressed, throw first object of inventory.
+        if (Input.GetKeyDown(KeyCode.R) && inventory.items.Count > 0)
+        {
+            GameObject obj = inventory.GetFirstItem();
+
+            if (obj != null)
+            {
+                obj.SetActive(true);
+                inventory.RemoveItem(obj);
+                ThrowObject(obj);
+            }
+        }
+
         // If space pressed, player jumps
         if (onGround && Input.GetKeyDown(KeyCode.Space))
         {
-            myRigidBody.AddForce(new Vector2(0, jumpForce));
+            rigidBody.AddForce(new Vector2(0, jumpForce));
         }
     }
 
     /// <summary>
-    /// Handle mouse click actions such as: Throws/User objects.
+    /// Handle mouse click actions.
     /// </summary>
     public void MouseActionHandler()
     {
-        // Throw object if mouse clicked and inventory list is not empty.
-        if (Input.GetMouseButtonDown(0) && inventory.items.Count > 0)
-        {
-            ThrowObject(inventory.GetFirstItem());
-        }
-    }
-
-    /// <summary>
-    /// Move player.
-    /// </summary>
-    /// <param name="horizontal"> How much player moves on horizontal. </param>
-    /// <param name="vertical"> How much player moves on vertical. </param>
-    public void Movement(float horizontal, float vertical)
-    {
-        ChangeDirection(horizontal);
-
-        if (collisions.Contains(GameObject.Find(Ladder.LadderResource)))
-        {
-            myRigidBody.gravityScale = 10;
-            myRigidBody.velocity = new Vector2(horizontal * 10, vertical * 10);
-        }
-
-        myRigidBody.velocity = new Vector2(horizontal * 10, myRigidBody.velocity.y);
-    }
-
-    /// <summary>
-    /// Change horizontal player direction.
-    /// </summary>
-    /// <param name="horizontal"></param>
-    private void ChangeDirection (float horizontal)
-    {
-        if (horizontal > 0 && !facingRight || horizontal < 0 && facingRight)
-        {
-            facingRight = !facingRight;
-
-            Vector3 scale = transform.localScale;
-            scale.x *= -1;
-
-            transform.localScale = scale;
-        }
     }
 
     /// <summary>
@@ -137,13 +165,9 @@ public class Player : MonoBehaviour, IPlayer
     /// <param name="obj"> Object that will be throwed away. </param>
     private void ThrowObject(GameObject obj)
     {
-        if (obj != null)
-        {
             // Movimento a posição do objeto até a posição do personagem.
-            obj = GameObject.Instantiate(obj, transform.position, transform.rotation);
-           
-            obj.GetComponent<Rigidbody2D>().AddForce(this.transform.up * 1000);
-        }
+            obj.transform.position = transform.position;
+            obj.GetComponent<Rigidbody2D>().velocity = new Vector2(transform.localScale.x, 1) * throwForce;
     }
 
     /// <summary>
@@ -152,8 +176,7 @@ public class Player : MonoBehaviour, IPlayer
     /// <param name="collision"> Colision generated. </param>
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.active)
-            collisions.Add(collision.gameObject);
+        onLadder = collision.gameObject.Equals(GameObject.Find(Ladder.LadderResource));
     }
 
     /// <summary>
@@ -162,6 +185,16 @@ public class Player : MonoBehaviour, IPlayer
     /// <param name="collision"> Collision between objects. </param>
     public void OnTriggerExit2D(Collider2D collision)
     {
-        collisions.Remove(collision.gameObject);
+        onLadder = !collision.gameObject.Equals(GameObject.Find(Ladder.LadderResource));
+    }
+    
+    /// <summary>
+    /// Draw a reference line based on object throwing distance
+    /// </summary>
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * transform.localScale.x * throwDistance);
     }
 }

@@ -36,5 +36,22 @@ namespace Assets.Scripts.Objects
         {
 
         }
+        /// <summary>
+        /// Collide with actives object. When a object it's on player inventory, it will be desactive.
+        /// </summary>
+        /// <param name="collision"> Colision generated. </param>
+        public void OnTriggerEnter2D(Collider2D collision)
+        {
+            print("f hale");
+        }
+
+        /// <summary>
+        /// Removes objects collision.
+        /// </summary>
+        /// <param name="collision"> Collision between objects. </param>
+        public void OnTriggerExit2D(Collider2D collision)
+        {
+            print("f hale");
+        }
     }
 }
