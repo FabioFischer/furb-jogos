@@ -6,16 +6,16 @@ public class CameraScript : MonoBehaviour
 {
 
     [SerializeField]
-    private float xMax;
+    public static float xMax = 21.0f;
 
     [SerializeField]
-    private float yMax;
+    public static float yMax = 0.5f;
 
     [SerializeField]
-    private float xMin;
+    public static float xMin = -22.0f;
 
     [SerializeField]
-    private float yMin;
+    public static float yMin = 0f;
 
     private Transform target;
 
@@ -33,6 +33,9 @@ public class CameraScript : MonoBehaviour
 	// Update is called once per frame
 	void LateUpdate ()
     {
-        transform.position = new Vector3(Mathf.Clamp(target.position.x, xMin, xMax), Mathf.Clamp(target.position.y, yMin, yMax), transform.position.z);
+        transform.position = new Vector3(
+            Mathf.Clamp(target.position.x, xMin, xMax), 
+            Mathf.Clamp(target.position.y, yMin, yMax), 
+            transform.position.z);
     }
 }

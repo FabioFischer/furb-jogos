@@ -12,13 +12,18 @@ public class Player : MonoBehaviour, IPlayer
     private RaycastHit2D hit { get; set; }
     private bool facingRight, onGround, onLadder;
 
+    public static float xMax = 45.0f;
+    public static float xMin = -46.5f;
+    public static float yMax = 15.0f;
+    public static float yMin = -7.0f;
+
     public Transform ground;
     public Transform holdPoint;
     public LayerMask groundObjects;
     public LayerMask notGrabbedObjects;
     public float groundRadius = 0.2f;
     public float jumpForce = 10000f;
-    public float throwDistance = 2f;
+    public float grabDistance = 2f;
     public float throwForce = 10f;
 
     // Use this for initialization
@@ -28,8 +33,11 @@ public class Player : MonoBehaviour, IPlayer
         animator = GetComponent<Animator>();
         inventory = new PlayerInventory();
         
-        facingRight = true;
         onLadder = false;
+
+        //Initiate looking left
+        ChangeDirection(1);
+        facingRight = !facingRight;
     }
 
     /// <summary>
@@ -39,10 +47,8 @@ public class Player : MonoBehaviour, IPlayer
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        
-        onGround = onGroundCheck(ground.position, groundRadius, groundObjects);
 
-        animator.SetFloat("Speed", Mathf.Abs(horizontal));
+        onGround = onGroundCheck(ground.position, groundRadius, groundObjects);
         //myAnimator.SetBool("Ground", onGround); Descomentar ao adicionar sprite de pulo do personagem
 
         Movement(horizontal, vertical);
@@ -62,13 +68,32 @@ public class Player : MonoBehaviour, IPlayer
 
         if (onLadder)
         {
-            rigidBody.gravityScale = 10;
             rigidBody.velocity = new Vector2(horizontal * 10, vertical * 10);
+        }
+        else if (CheckBoundaries(transform.position, horizontal, vertical))
+        {
+            animator.SetFloat("Speed", Mathf.Abs(horizontal));
+
+            rigidBody.velocity = new Vector2(
+                horizontal * 10,
+                rigidBody.velocity.y);
         }
         else
         {
-            rigidBody.velocity = new Vector2(horizontal * 10, rigidBody.velocity.y);
+            animator.SetFloat("Speed", Mathf.Abs(0));
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    private bool CheckBoundaries(Vector3 pos, float horizontal, float vertical)
+    {
+        return (facingRight)
+            ? pos.x + horizontal <= xMax && pos.y + vertical <= yMax && pos.y + vertical >= yMin
+            : pos.x + horizontal >= xMin && pos.y + vertical <= yMax && pos.y + vertical >= yMin;
     }
 
     /// <summary>
@@ -97,7 +122,7 @@ public class Player : MonoBehaviour, IPlayer
         hit = Physics2D.Raycast(
             transform.position, 
             Vector2.right * transform.localScale.x, 
-            throwDistance);
+            grabDistance);
     }
 
     /// <summary> 
@@ -132,16 +157,17 @@ public class Player : MonoBehaviour, IPlayer
             }
         }
 
-        // If R key pressed, throw first object of inventory.
+        // If R key pressed, throw first object on inventory.
         if (Input.GetKeyDown(KeyCode.R) && inventory.items.Count > 0)
         {
             GameObject obj = inventory.GetFirstItem();
 
             if (obj != null)
             {
-                obj.SetActive(true);
                 inventory.RemoveItem(obj);
+                obj.SetActive(true);
                 ThrowObject(obj);
+                hit = new RaycastHit2D();
             }
         }
 
@@ -167,7 +193,7 @@ public class Player : MonoBehaviour, IPlayer
     {
             // Movimento a posição do objeto até a posição do personagem.
             obj.transform.position = transform.position;
-            obj.GetComponent<Rigidbody2D>().velocity = new Vector2(transform.localScale.x, 1) * throwForce;
+            obj.GetComponent<Rigidbody2D>().velocity = new Vector2(transform.localScale.x, 2) * throwForce;
     }
 
     /// <summary>
@@ -195,6 +221,6 @@ public class Player : MonoBehaviour, IPlayer
     {
         Gizmos.color = Color.green;
 
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * transform.localScale.x * throwDistance);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * transform.localScale.x * grabDistance);
     }
 }

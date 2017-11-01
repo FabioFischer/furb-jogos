@@ -42,7 +42,6 @@ namespace Assets.Scripts.Objects
         /// <param name="collision"> Colision generated. </param>
         public void OnTriggerEnter2D(Collider2D collision)
         {
-            print("f hale");
         }
 
         /// <summary>
@@ -51,7 +50,6 @@ namespace Assets.Scripts.Objects
         /// <param name="collision"> Collision between objects. </param>
         public void OnTriggerExit2D(Collider2D collision)
         {
-            print("f hale");
         }
     }
 }
