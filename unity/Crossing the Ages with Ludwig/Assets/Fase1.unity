@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 507718127}
   - component: {fileID: 507718131}
   m_Layer: 8
-  m_Name: Player
+  m_Name: Sofie
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -376,7 +376,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &507718128
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -471,7 +471,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 507718125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd97b9e4c1560284aa643e8643d6616b, type: 3}
+  m_Script: {fileID: 11500000, guid: 38a47dd495601a54984fe705b23c1594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ground: {fileID: 1153766979}
@@ -479,13 +479,11 @@ MonoBehaviour:
   groundObjects:
     serializedVersion: 2
     m_Bits: 4294967039
-  notGrabbedObjects:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  walkSpeed: 10
   groundRadius: 0.5
   jumpForce: 80000
   grabDistance: 5
-  throwForce: 20
+  throwForce: 30
 --- !u!1 &586511516
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +577,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9244a0efcb9b79e4dad5cc9e50970766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xMax: 0
+  yMax: 0
+  xMin: 0
+  yMin: 0
 --- !u!1 &658208380
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +591,9 @@ GameObject:
   - component: {fileID: 658208381}
   - component: {fileID: 658208383}
   - component: {fileID: 658208382}
+  - component: {fileID: 658208385}
+  - component: {fileID: 658208384}
+  - component: {fileID: 658208386}
   m_Layer: 0
   m_Name: Livro
   m_TagString: Untagged
@@ -603,7 +608,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 658208380}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 70.648155, y: 1.5286099, z: -1}
+  m_LocalPosition: {x: 71.1, y: -3.6, z: -1}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1931624735}
@@ -670,6 +675,62 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!61 &658208384
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 658208380}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.23223495, y: 0.4644928}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.24, y: 10.24}
+    newSize: {x: 10.24, y: 10.24}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 6.9884872, y: 9.311014}
+  m_EdgeRadius: 0
+--- !u!50 &658208385
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 658208380}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 1
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
+--- !u!114 &658208386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 658208380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 601d96f52f7b6f34bbcfaff47b598ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &857739933
 GameObject:
   m_ObjectHideFlags: 0

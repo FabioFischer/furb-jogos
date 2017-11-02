@@ -11,12 +11,12 @@ namespace Assets.Scripts.Objects
         private Vector3 direction { get; set; }
         private float throwSpeed { get; set; }
 
-        private const string FlaskRes = "Frasco";
-        public static string FlaskResource
+        private const string resourceName = "Frasco";
+        public static string GetResourceName
         {
             get
             {
-                return FlaskRes;
+                return resourceName;
             }
         }
 

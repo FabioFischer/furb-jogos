@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Game;
+using Assets.Scripts.Player;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,36 +8,64 @@ public class CameraScript : MonoBehaviour
 {
 
     [SerializeField]
-    public static float xMax = 21.0f;
+    private float xMax;
 
     [SerializeField]
-    public static float yMax = 0.5f;
+    private float yMax;
 
     [SerializeField]
-    public static float xMin = -22.0f;
+    private float xMin;
 
     [SerializeField]
-    public static float yMin = 0f;
+    private float yMin;
 
     private Transform target;
-
-	// Use this for initialization
-	void Start ()
+    
+    /// <summary>
+    /// Use this for initialization
+    /// </summary>
+    void Start()
     {
-        target = GameObject.Find("Player").transform;
-    }
+        this.target = GetTargetTransform();
 
+        float screenVert = Camera.main.orthographicSize;
+        float screenHoriz = screenVert * Screen.width / Screen.height;
+
+        GameManager.GetCameraBoundaries
+            (
+                GameObject.Find("Quarto do ludwig").GetComponentInChildren<SpriteRenderer>(),
+                screenHoriz,
+                screenVert,
+                out this.xMin, 
+                out this.xMax, 
+                out this.yMin, 
+                out this.yMax            
+            );
+    }
+    
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
-        target = GameObject.Find("Player").transform;
+        this.target = GetTargetTransform();
     }
-	
-	// Update is called once per frame
-	void LateUpdate ()
+
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
+    void LateUpdate ()
     {
-        transform.position = new Vector3(
-            Mathf.Clamp(target.position.x, xMin, xMax), 
-            Mathf.Clamp(target.position.y, yMin, yMax), 
-            transform.position.z);
+        transform.position = new Vector3
+            (
+                Mathf.Clamp(target.position.x, xMin, xMax), 
+                Mathf.Clamp(target.position.y, yMin, yMax), 
+                transform.position.z
+            );
+    }
+
+    private Transform GetTargetTransform()
+    {
+        return GameObject.Find(Sofie.GetResourceName).transform;
     }
 }

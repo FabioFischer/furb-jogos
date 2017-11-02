@@ -2,26 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Assets.Scripts.Objects
 {
-    public class Ladder : MonoBehaviour, IUsable
+    public class Book : MonoBehaviour
     {
         /// <summary>
         /// 
         /// </summary>
-        private const string resourceName = "Escada";
+        private const string resourceName = "Livro";
         public static string GetResourceName
         {
             get
             {
                 return resourceName;
             }
-        }
-
-        public void Use()
-        {
-            throw new System.NotImplementedException();
         }
 
         // Use this for initialization
