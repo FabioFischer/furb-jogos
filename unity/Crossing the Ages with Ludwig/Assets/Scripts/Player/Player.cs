@@ -24,7 +24,6 @@ namespace Assets.Scripts.Player
         private PlayerInventory inventory { get; set; }
         private RaycastHit2D hit { get; set; }
 
-        public AudioClip jumpSound;
         public Transform ground;
         public Transform holdPoint;
         public LayerMask groundObjects;
@@ -209,11 +208,6 @@ namespace Assets.Scripts.Player
             {
                 // Jump
                 rigidBody.AddForce(new Vector2(0, jumpForce));
-
-                // Play jump sound
-                Debug.Log("pulano");
-                float vol = Random.Range (70, 100);
-                audio.PlayOneShot(jumpSound, vol);
             }
         }
 
