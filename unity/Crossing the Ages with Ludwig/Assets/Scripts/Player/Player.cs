@@ -211,7 +211,8 @@ namespace Assets.Scripts.Player
                 rigidBody.AddForce(new Vector2(0, jumpForce));
 
                 // Play jump sound
-                float vol = Random.Range (volLowRange, volHighRange);
+                Debug.Log("pulano");
+                float vol = Random.Range (70, 100);
                 audio.PlayOneShot(jumpSound, vol);
             }
         }
