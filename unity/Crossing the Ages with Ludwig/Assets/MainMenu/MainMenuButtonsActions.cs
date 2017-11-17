@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuButtonsActions : MonoBehaviour 
 {
+	public GameObject textBox;
+	public GameObject buttonBack;
+
 	/// <summary>
 	/// On button Play click, load Fase1 scene.
 	/// To a scene be loaded, it has to be added on Edit->Build and Settings.
@@ -17,8 +20,16 @@ public class MainMenuButtonsActions : MonoBehaviour
 	/// </summary>
 	public void About()
 	{
-
+		buttonBack.SetActive(true);		
+		textBox.SetActive(true);
 	}
+
+	public void HideAboutBox()
+	{
+		textBox.SetActive(false);
+		buttonBack.SetActive(false);
+	}
+
 
 	/// <summary>
 	/// Exit game on button click.
