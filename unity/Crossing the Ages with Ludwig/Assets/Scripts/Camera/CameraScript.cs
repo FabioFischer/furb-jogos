@@ -41,6 +41,7 @@ public class CameraScript : MonoBehaviour
                 out this.yMin, 
                 out this.yMax            
             );
+
     }
     
     /// <summary>

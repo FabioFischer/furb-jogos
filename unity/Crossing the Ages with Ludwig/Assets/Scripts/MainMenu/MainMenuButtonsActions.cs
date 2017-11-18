@@ -7,12 +7,12 @@ public class MainMenuButtonsActions : MonoBehaviour
 	public GameObject buttonBack;
 
 	/// <summary>
-	/// On button Play click, load Fase1 scene.
+	/// On button Play click, load prologue scene.
 	/// To a scene be loaded, it has to be added on Edit->Build and Settings.
 	/// </summary>
 	public void Play()
 	{
-		SceneManager.LoadScene("Fase1");
+		SceneManager.LoadScene("Prologue");
 	}
 
 	/// <summary>

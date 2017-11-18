@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Fase1.unity
     guid: 68f14e3e003a4cf42b907c386acaab3f
+  - enabled: 1
+    path: Assets/Scenes/Prologue.unity
+    guid: a4b5144707282d549ac9ca387a870b85

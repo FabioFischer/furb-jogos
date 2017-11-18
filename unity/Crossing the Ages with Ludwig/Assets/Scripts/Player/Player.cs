@@ -21,6 +21,7 @@ namespace Assets.Scripts.Player
         private Rigidbody2D rigidBody;
         private Animator animator;
         private AudioSource audio;
+        public GameObject textBox;
         private PlayerInventory inventory { get; set; }
         private RaycastHit2D hit { get; set; }
 
@@ -75,10 +76,22 @@ namespace Assets.Scripts.Player
         /// </summary>
         void Update()
         {
-            MovementHandler();
-            CheckCollision();
-            KeyActionHandler();
-            MouseActionHandler();
+            // If textbox its active, doesn't allow player to move
+            if(!CheckTextBoxActive())
+            {
+                MovementHandler();
+                CheckCollision();
+                KeyActionHandler();
+                MouseActionHandler();
+            }
+        }
+
+        /// <summary>
+        /// Check if there is some text box active.
+        /// </summary>
+        public bool CheckTextBoxActive()
+        {
+            return textBox.active;
         }
 
         /// <summary>
