@@ -4,6 +4,7 @@ using Assets.Scripts.Objects;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Game;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Player
 
@@ -15,7 +16,7 @@ namespace Assets.Scripts.Player
         private float yMin;
         private float yMax;
 
-        private const string resourceName = "Sofie";
+        private string resourceName;
         private bool facingRight, onGround, onLadder;
 
         private Rigidbody2D rigidBody;
@@ -41,7 +42,13 @@ namespace Assets.Scripts.Player
         {
             get
             {
-                return resourceName;
+                // Precisa disso para não ferrar com as referências e nomes de gameobjects. Não remover.            
+                if(SceneManager.GetActiveScene().name.Equals("Fase1"))
+                    return "Sofie";
+                else if(SceneManager.GetActiveScene().name.Equals("Fase2"))
+                    return "Ludwig";
+                else
+                    return null;
             }
         }
 
@@ -55,10 +62,19 @@ namespace Assets.Scripts.Player
             this.inventory = new PlayerInventory();
 
             this.onLadder = false;
+            string objectToFind = "";
+
+            // Precisa disso para não ferrar com as referências e nomes de gameobjects. Não remover. 
+            if(SceneManager.GetActiveScene().name.Equals("Fase1"))
+                objectToFind = "Quarto do ludwig";
+            else if(SceneManager.GetActiveScene().name.Equals("Fase2"))
+                objectToFind = "Scene";
+            else
+                objectToFind = "";
 
             GameManager.GetMovementBoundaries
                 (
-                    GameObject.Find("Quarto do ludwig").GetComponentInChildren<SpriteRenderer>(), // Após a estruturação dos levels, utilizar o background
+                    GameObject.Find(objectToFind).GetComponentInChildren<SpriteRenderer>(), // Após a estruturação dos levels, utilizar o background
                     out this.xMin,
                     out this.xMax,
                     out this.yMin,
