@@ -383,6 +383,11 @@ onTombStone2 = true;
   
                 }
             }
+            // Portal collision
+            else if (collision.gameObject.Equals(GameObject.Find(Portal.GetResourceName)))
+            {
+                SceneManager.LoadScene("Fase2");
+            }
         }
 
         /// <summary>
