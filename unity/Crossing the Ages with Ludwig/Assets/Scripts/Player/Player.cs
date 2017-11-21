@@ -291,6 +291,11 @@ namespace Assets.Scripts.Player
                     GameManager.PlaySoundOneShot(audioSource, portalSound);
                 }
             }
+            // Portal collision
+            else if (collision.gameObject.Equals(GameObject.Find(Portal.GetResourceName)))
+            {
+                SceneManager.LoadScene("Fase2");
+            }
         }
 
         /// <summary>
