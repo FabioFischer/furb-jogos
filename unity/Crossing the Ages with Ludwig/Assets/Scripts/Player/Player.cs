@@ -17,7 +17,8 @@ namespace Assets.Scripts.Player
         private float yMax;
 
         private string resourceName;
-        private bool facingRight, onGround, onLadder;
+        private bool facingRight, onGround, onLadder, onTombStone1, onTombStone2, onTombStone3;
+        private int level, actualPos;
 
         private Rigidbody2D rigidBody;
         private Animator animator;
@@ -25,6 +26,13 @@ namespace Assets.Scripts.Player
         private PlayerInventory inventory { get; set; }
         private RaycastHit2D hit { get; set; }
         private AudioSource audioSource;
+        public GameObject TombStone1;
+        public GameObject TombStone2;
+        public GameObject TombStone3;
+        public GameObject TombStoneActive1;
+        public GameObject TombStoneActive2;
+        public GameObject TombStoneActive3;
+        public string correctSeq = "231";
 
         public AudioClip jumpSound, portalSound;
         public Transform ground;
@@ -65,14 +73,32 @@ namespace Assets.Scripts.Player
 
             this.onLadder = false;
             string objectToFind = "";
+            this.correctSeq = "132";
+            this.actualPos = 0;
+
+            TombStone1 = GameObject.Find("TombStone1");
+            TombStone2 = GameObject.Find("TombStone2");
+            TombStone3 = GameObject.Find("TombStone3");
+            TombStoneActive1 = GameObject.Find("TombStoneActive1");
+            TombStoneActive2 = GameObject.Find("TombStoneActive2");
+            TombStoneActive3 = GameObject.Find("TombStoneActive3");
 
             // Precisa disso para não ferrar com as referências e nomes de gameobjects. Não remover. 
             if(SceneManager.GetActiveScene().name.Equals("Fase1"))
+            {
+                level = 1;
                 objectToFind = "Quarto do ludwig";
+            }
             else if(SceneManager.GetActiveScene().name.Equals("Fase2"))
+            {
+                level = 2;
                 objectToFind = "Scene";
+            }
             else
+            {
+                level = 0;
                 objectToFind = "";
+            }
 
             GameManager.GetMovementBoundaries
                 (
@@ -92,8 +118,11 @@ namespace Assets.Scripts.Player
 
         void idlePortal()
         {
-            GameObject portal = GameObject.Find(Portal.GetResourceName);
-            portal.transform.position = new Vector3(portal.transform.position.x, portal.transform.position.y, portal.transform.position.z * (-1));
+            if(level == 1)
+            {
+                GameObject portal = GameObject.Find(Portal.GetResourceName);
+                portal.transform.position = new Vector3(portal.transform.position.x, portal.transform.position.y, portal.transform.position.z * (-1));
+            }
         }
 
         /// <summary>
@@ -108,6 +137,49 @@ namespace Assets.Scripts.Player
                 CheckCollision();
                 KeyActionHandler();
                 MouseActionHandler();
+                TombStoneHandler();
+            }
+        }
+        
+        public bool isSeqCorrect(char sequence)
+        {
+            if(correctSeq[actualPos] == sequence)
+            {
+                actualPos++;
+                return (actualPos == 3);
+            }
+            actualPos = 0;
+
+            return false;
+        }
+
+        public void TombStoneHandler()
+        {
+            
+            if(Input.GetKeyDown("e"))
+            {
+                bool won = false;
+                if(onTombStone1)
+                {
+                    var otherPosn = TombStone1.transform.position;
+                    TombStone1.transform.position = new Vector3(otherPosn.x, otherPosn.y, 1);
+                    TombStoneActive1.transform.position = new Vector3(otherPosn.x, otherPosn.y, 0);
+                    won = isSeqCorrect('1');
+                } 
+                else if(onTombStone2)
+                {
+                    var otherPosn = TombStone2.transform.position;
+                    TombStone2.transform.position = new Vector3(otherPosn.x, otherPosn.y, 1);
+                    TombStoneActive2.transform.position = new Vector3(otherPosn.x, otherPosn.y, 0);
+                    won = isSeqCorrect('2');
+                }
+                else if (onTombStone3)
+                {
+                    var otherPosn = TombStone3.transform.position;
+                    TombStone3.transform.position = new Vector3(otherPosn.x, otherPosn.y, 1);
+                    TombStoneActive3.transform.position = new Vector3(otherPosn.x, otherPosn.y, 0);
+                    won = isSeqCorrect('3');
+                }
             }
         }
 
@@ -275,20 +347,40 @@ namespace Assets.Scripts.Player
         /// <param name="collision"> Colision generated. </param>
         public void OnTriggerEnter2D(Collider2D collision)
         {
-            // Ladder collision
-            if (collision.gameObject.Equals(GameObject.Find(Ladder.GetResourceName)))
+            if(level == 1)
             {
-                onLadder = true;
-            }
-            // Book collision
-            else if (collision.gameObject.Equals(GameObject.Find(Book.GetResourceName)))
-            {
-                if (this.inventory.Contains(Key.GetResourceName))
+                // Ladder collision
+                if (collision.gameObject.Equals(GameObject.Find(Ladder.GetResourceName)))
                 {
-                    inventory.RemoveItem(Key.GetResourceName);
-                    Destroy(collision.gameObject);
-                    idlePortal();
-                    GameManager.PlaySoundOneShot(audioSource, portalSound);
+                    onLadder = true;
+                }
+                // Book collision
+                else if (collision.gameObject.Equals(GameObject.Find(Book.GetResourceName)))
+                {
+                    if (this.inventory.Contains(Key.GetResourceName))
+                    {
+                        inventory.RemoveItem(Key.GetResourceName);
+                        Destroy(collision.gameObject);
+                        idlePortal();
+                        GameManager.PlaySoundOneShot(audioSource, portalSound);
+                    }
+                }
+            } 
+            else if(level == 2)
+            {
+                if (collision.gameObject.Equals(GameObject.Find("TombStone1"))) {
+         
+                    onTombStone1 = true;
+                }
+                else if (collision.gameObject.Equals(GameObject.Find("TombStone2"))) {
+onTombStone2 = true;
+
+                }
+                    
+                else if (collision.gameObject.Equals(GameObject.Find("TombStone3"))) {
+
+                    onTombStone3 = true;
+  
                 }
             }
         }
@@ -303,6 +395,15 @@ namespace Assets.Scripts.Player
             if (collision.gameObject.Equals(GameObject.Find(Ladder.GetResourceName)))
             {
                 onLadder = false;
+            }
+            else if(level == 2)
+            {
+                if (collision.gameObject.Equals(GameObject.Find("TombStone1")))
+                    onTombStone1 = false;
+                else if (collision.gameObject.Equals(GameObject.Find("TombStone2")))
+                    onTombStone2 = false;
+                else if (collision.gameObject.Equals(GameObject.Find("TombStone3")))
+                    onTombStone3 = false;
             }
         }
     }
