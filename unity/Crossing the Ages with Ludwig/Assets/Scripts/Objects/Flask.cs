@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Game;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,14 @@ namespace Assets.Scripts.Objects
     {
         private Rigidbody2D rigidBody;
         private Animator animator;
+        private AudioSource audioSource;
         private RaycastHit2D hit { get; set; }
 
         private Vector3 direction { get; set; }
         private float throwSpeed { get; set; }
 
-        public float grabDistance = 200f;
+        public float grabDistance = 2f;
+        public AudioClip explosionSound;
 
         private const string resourceName = "Frasco";
         public static string GetResourceName
@@ -37,7 +40,7 @@ namespace Assets.Scripts.Objects
         {
             this.rigidBody = GetComponent<Rigidbody2D>();
             this.animator = GetComponent<Animator>();
-
+            this.audioSource = GetComponent<AudioSource>();
         }
 
         // Update is called once per frame
@@ -52,6 +55,7 @@ namespace Assets.Scripts.Objects
         public void OnTriggerEnter2D(Collider2D collision)
         {
             animator.SetBool("isExploded", false);
+            GameManager.PlaySoundOneShot(audioSource, explosionSound);
         }
 
         /// <summary>
