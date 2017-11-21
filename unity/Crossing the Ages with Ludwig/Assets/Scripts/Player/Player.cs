@@ -21,11 +21,12 @@ namespace Assets.Scripts.Player
 
         private Rigidbody2D rigidBody;
         private Animator animator;
-        private AudioSource audio;
         public GameObject textBox;
         private PlayerInventory inventory { get; set; }
         private RaycastHit2D hit { get; set; }
+        private AudioSource audioSource;
 
+        public AudioClip jumpSound, portalSound;
         public Transform ground;
         public Transform holdPoint;
         public LayerMask groundObjects;
@@ -60,6 +61,7 @@ namespace Assets.Scripts.Player
             this.rigidBody = GetComponent<Rigidbody2D>();
             this.animator = GetComponent<Animator>();
             this.inventory = new PlayerInventory();
+            this.audioSource = GetComponent<AudioSource>();
 
             this.onLadder = false;
             string objectToFind = "";
@@ -82,9 +84,16 @@ namespace Assets.Scripts.Player
                     2.0f // margin value
                 );
 
+            idlePortal();
             //Init scene facing left
             ChangeDirection(1);
             facingRight = !facingRight;
+        }
+
+        void idlePortal()
+        {
+            GameObject portal = GameObject.Find(Portal.GetResourceName);
+            portal.transform.position = new Vector3(portal.transform.position.x, portal.transform.position.y, portal.transform.position.z * (-1));
         }
 
         /// <summary>
@@ -237,6 +246,7 @@ namespace Assets.Scripts.Player
             {
                 // Jump
                 rigidBody.AddForce(new Vector2(0, jumpForce));
+                GameManager.PlaySoundOneShot(audioSource, jumpSound);
             }
         }
 
@@ -265,7 +275,22 @@ namespace Assets.Scripts.Player
         /// <param name="collision"> Colision generated. </param>
         public void OnTriggerEnter2D(Collider2D collision)
         {
-            onLadder = collision.gameObject.Equals(GameObject.Find(Ladder.GetResourceName));
+            // Ladder collision
+            if (collision.gameObject.Equals(GameObject.Find(Ladder.GetResourceName)))
+            {
+                onLadder = true;
+            }
+            // Book collision
+            else if (collision.gameObject.Equals(GameObject.Find(Book.GetResourceName)))
+            {
+                if (this.inventory.Contains(Key.GetResourceName))
+                {
+                    inventory.RemoveItem(Key.GetResourceName);
+                    Destroy(collision.gameObject);
+                    idlePortal();
+                    GameManager.PlaySoundOneShot(audioSource, portalSound);
+                }
+            }
         }
 
         /// <summary>
@@ -274,7 +299,11 @@ namespace Assets.Scripts.Player
         /// <param name="collision"> Collision between objects. </param>
         public void OnTriggerExit2D(Collider2D collision)
         {
-            onLadder = !collision.gameObject.Equals(GameObject.Find(Ladder.GetResourceName));
+            // Ladder collision
+            if (collision.gameObject.Equals(GameObject.Find(Ladder.GetResourceName)))
+            {
+                onLadder = false;
+            }
         }
     }
 }

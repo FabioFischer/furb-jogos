@@ -80,6 +80,18 @@ namespace Assets.Scripts.Game
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="audioClip"></param>
+        public static void PlaySoundOneShot(AudioSource source, AudioClip clip)
+        {
+            if (source != null && clip != null)
+            {
+                source.PlayOneShot(clip, 1);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         void Start()
         {
         }

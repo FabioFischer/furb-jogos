@@ -28,6 +28,20 @@ namespace Assets.Scripts
             items.Add(obj);
         }
 
+        public bool Contains(String resName)
+        {
+            return items.Exists(obj => obj.name == resName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        public void RemoveItem(String resName)
+        {
+            this.items.Remove(GameObject.Find(resName));
+        }
+
         /// <summary>
         /// 
         /// </summary>
