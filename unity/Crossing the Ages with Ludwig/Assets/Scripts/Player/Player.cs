@@ -373,12 +373,10 @@ namespace Assets.Scripts.Player
                     onTombStone1 = true;
                 }
                 else if (collision.gameObject.Equals(GameObject.Find("TombStone2"))) {
-onTombStone2 = true;
-
+                    onTombStone2 = true;
                 }
                     
                 else if (collision.gameObject.Equals(GameObject.Find("TombStone3"))) {
-
                     onTombStone3 = true;
   
                 }
