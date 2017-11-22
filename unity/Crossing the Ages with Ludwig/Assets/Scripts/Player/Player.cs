@@ -17,8 +17,10 @@ namespace Assets.Scripts.Player
         private float yMax;
 
         private string resourceName;
-        private bool facingRight, onGround, onLadder, onTombStone1, onTombStone2, onTombStone3;
+        private bool facingRight, onGround, onLadder, onTombStone1, onTombStone2, onTombStone3, isKeyMoved;
         private int level, actualPos;
+
+        private Vector3 keyPosition;
 
         private Rigidbody2D rigidBody;
         private Animator animator;
@@ -34,6 +36,7 @@ namespace Assets.Scripts.Player
         public GameObject TombStoneActive3;
         public string correctSeq = "231";
 
+        public GameObject restartText, restartButton;
         public AudioClip jumpSound, portalSound;
         public Transform ground;
         public Transform holdPoint;
@@ -70,11 +73,14 @@ namespace Assets.Scripts.Player
             this.animator = GetComponent<Animator>();
             this.inventory = new PlayerInventory();
             this.audioSource = GetComponent<AudioSource>();
-
+            
             this.onLadder = false;
             string objectToFind = "";
             this.correctSeq = "132";
             this.actualPos = 0;
+
+            restartText.SetActive(false);
+            restartButton.SetActive(false);
 
             TombStone1 = GameObject.Find("TombStone1");
             TombStone2 = GameObject.Find("TombStone2");
@@ -88,6 +94,9 @@ namespace Assets.Scripts.Player
             {
                 level = 1;
                 objectToFind = "Quarto do ludwig";
+                keyPosition = GameObject.Find(Key.GetResourceName).transform.position;
+                isKeyMoved = false;
+                idlePortal();
             }
             else if(SceneManager.GetActiveScene().name.Equals("Fase2"))
             {
@@ -109,13 +118,14 @@ namespace Assets.Scripts.Player
                     out this.yMax,
                     2.0f // margin value
                 );
-
-            idlePortal();
             //Init scene facing left
             ChangeDirection(1);
             facingRight = !facingRight;
         }
-
+    
+        /// <summary>
+        /// 
+        /// </summary>
         void idlePortal()
         {
             if(level == 1)
@@ -123,6 +133,19 @@ namespace Assets.Scripts.Player
                 GameObject portal = GameObject.Find(Portal.GetResourceName);
                 portal.transform.position = new Vector3(portal.transform.position.x, portal.transform.position.y, portal.transform.position.z * (-1));
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        bool isOriginalPosition()
+        {
+            GameObject key = GameObject.Find(Key.GetResourceName);
+            if (key != null) {
+                return (this.keyPosition == key.transform.position);
+            }
+            return !inventory.items.Contains(key);
         }
 
         /// <summary>
@@ -138,9 +161,34 @@ namespace Assets.Scripts.Player
                 KeyActionHandler();
                 MouseActionHandler();
                 TombStoneHandler();
+                IsLevelBeatable();
+            }
+        }
+
+        /// <summary>
+        /// Check if the level is still winnable
+        /// </summary>
+        public void IsLevelBeatable()
+        {
+            if (level == 1)
+            {
+                if (isOriginalPosition() && (!inventory.Contains(Flask.GetResourceName) && GameObject.Find(Flask.GetResourceName) == null))
+                {
+                    restartText.SetActive(true);
+                    restartButton.SetActive(true);
+                    animator.SetFloat("Speed", 0);
+                }
+            }
+            else if (level == 2)
+            {
             }
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sequence"></param>
+        /// <returns></returns>
         public bool isSeqCorrect(char sequence)
         {
             if(correctSeq[actualPos] == sequence)
@@ -153,6 +201,9 @@ namespace Assets.Scripts.Player
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TombStoneHandler()
         {
             
@@ -188,7 +239,7 @@ namespace Assets.Scripts.Player
         /// </summary>
         public bool CheckTextBoxActive()
         {
-            return textBox.active;
+            return textBox.active || restartText.active;
         }
 
         /// <summary>
@@ -365,6 +416,11 @@ namespace Assets.Scripts.Player
                         GameManager.PlaySoundOneShot(audioSource, portalSound);
                     }
                 }
+                // Portal collision
+                else if (collision.gameObject.Equals(GameObject.Find(Portal.GetResourceName)) && (GameObject.Find(Portal.GetResourceName).transform.position.z < 0))
+                {
+                    SceneManager.LoadScene("Fase2");
+                }
             } 
             else if(level == 2)
             {
@@ -380,11 +436,6 @@ namespace Assets.Scripts.Player
                     onTombStone3 = true;
   
                 }
-            }
-            // Portal collision
-            else if (collision.gameObject.Equals(GameObject.Find(Portal.GetResourceName)))
-            {
-                SceneManager.LoadScene("Fase2");
             }
         }
 
